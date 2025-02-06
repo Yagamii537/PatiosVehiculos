@@ -7,22 +7,26 @@ class InfraccionController
 
     public function __construct()
     {
+        Auth::requirePermission("gestionar_infracciones");
         $this->infraccionModel = new Infraccion();
     }
 
     public function index()
     {
+        Auth::requirePermission("gestionar_infracciones");
         $infracciones = $this->infraccionModel->getAll();
         require_once __DIR__ . "/../views/infracciones/index.php";
     }
 
     public function create()
     {
+        Auth::requirePermission("crear_infraccion");
         require_once __DIR__ . "/../views/infracciones/create.php";
     }
 
     public function store()
     {
+        Auth::requirePermission("crear_infraccion");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $descripcion = $_POST["descripcion"];
             $multa = $_POST["multa"];
@@ -35,6 +39,7 @@ class InfraccionController
 
     public function edit()
     {
+        Auth::requirePermission("editar_infraccion");
         $id = $_GET["id"] ?? null;
         if (!$id) {
             header("Location: /gestionpatios/infracciones");
@@ -47,6 +52,7 @@ class InfraccionController
 
     public function update()
     {
+        Auth::requirePermission("editar_infraccion");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $id = $_POST["id"];
             $descripcion = $_POST["descripcion"];
@@ -60,6 +66,7 @@ class InfraccionController
 
     public function delete()
     {
+        Auth::requirePermission("eliminar_infraccion");
         $id = $_GET["id"] ?? null;
         if ($id) {
             $this->infraccionModel->delete($id);

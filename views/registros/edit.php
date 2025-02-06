@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION["usuario"])) {
     header("Location: /gestionpatios/login");
     exit();
@@ -17,10 +19,8 @@ $usuario = $_SESSION["usuario"];
         <div class="col-9">
             <div class="container mt-5">
                 <h2>Editar Registro</h2>
-
                 <form action="/gestionpatios/registros/update" method="POST">
                     <input type="hidden" name="id" value="<?php echo htmlspecialchars($registro["id"]); ?>">
-
                     <div class="mb-3">
                         <label for="vehiculo_placa" class="form-label">Vehículo</label>
                         <input type="text" class="form-control" value="<?php echo htmlspecialchars($registro["vehiculo_placa"]); ?>" disabled>

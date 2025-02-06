@@ -5,7 +5,9 @@ class AuthController
 {
     public function login()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $error = "";
 
@@ -39,7 +41,9 @@ class AuthController
     }
     public function register()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $nombre = trim($_POST["nombre"]);

@@ -13,6 +13,7 @@ class RegistroController
 
     public function __construct()
     {
+        Auth::requirePermission("gestionar_registros");
         $this->registroModel = new Registro();
         $this->vehiculoModel = new Vehiculo();
         $this->infraccionModel = new Infraccion();
@@ -21,12 +22,14 @@ class RegistroController
 
     public function index()
     {
+        Auth::requirePermission("gestionar_registros");
         $registros = $this->registroModel->getAll();
         require_once __DIR__ . "/../views/registros/index.php";
     }
 
     public function create()
     {
+        Auth::requirePermission("crear_registro");
         session_start();
         if (!isset($_SESSION["usuario"])) {
             header("Location: /gestionpatios/login");
@@ -40,26 +43,9 @@ class RegistroController
         require_once __DIR__ . "/../views/registros/create.php";
     }
 
-    public function edit()
-    {
-        if (!isset($_GET["id"])) {
-            echo "Error: No se proporcionó un ID de registro.";
-            exit();
-        }
-
-        $id = $_GET["id"];
-        $registro = $this->registroModel->getById($id);
-
-        if (!$registro) {
-            echo "Error: Registro no encontrado.";
-            exit();
-        }
-
-        require_once __DIR__ . "/../views/registros/edit.php";
-    }
-
     public function store()
     {
+        Auth::requirePermission("crear_registro");
         session_start();
         if (!isset($_SESSION["usuario"])) {
             header("Location: /gestionpatios/login");
@@ -80,8 +66,30 @@ class RegistroController
         }
     }
 
+    public function edit()
+    {
+        Auth::requirePermission("editar_registro");
+        if (!isset($_GET["id"])) {
+            echo "Error: No se proporcionó un ID de registro.";
+            exit();
+        }
+
+        $id = $_GET["id"];
+        $registro = $this->registroModel->getById($id);
+
+        if (!$registro) {
+            echo "Error: Registro no encontrado.";
+            exit();
+        }
+
+        require_once __DIR__ . "/../views/registros/edit.php";
+    }
+
+
+
     public function update()
     {
+        Auth::requirePermission("editar_registro");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $id = $_POST["id"] ?? null;
             $detalles = $_POST["detalles"] ?? "";
@@ -103,6 +111,7 @@ class RegistroController
 
     public function delete()
     {
+        Auth::requirePermission("eliminar_registro");
         $id = $_GET["id"] ?? null;
         if ($id) {
             $this->registroModel->delete($id);

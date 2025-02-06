@@ -7,22 +7,26 @@ class PropietarioController
 
     public function __construct()
     {
+        Auth::requirePermission("gestionar_propietarios");
         $this->propietarioModel = new Propietario();
     }
 
     public function index()
     {
+        Auth::requirePermission("gestionar_propietarios");
         $propietarios = $this->propietarioModel->getAll();
         require_once __DIR__ . "/../views/propietarios/index.php";
     }
 
     public function create()
     {
+        Auth::requirePermission("crear_propietario");
         require_once __DIR__ . "/../views/propietarios/create.php";
     }
 
     public function store()
     {
+        Auth::requirePermission("crear_propietario");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $cedula = $_POST["cedula"];
             $nombre = $_POST["nombre"];
@@ -38,6 +42,7 @@ class PropietarioController
 
     public function edit()
     {
+        Auth::requirePermission("editar_propietario");
         $cedula = $_GET["cedula"] ?? null;
         if (!$cedula) {
             header("Location: /gestionpatios/propietarios");
@@ -50,6 +55,7 @@ class PropietarioController
 
     public function update()
     {
+        Auth::requirePermission("editar_propietario");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $cedula = $_POST["cedula"];
             $nombre = $_POST["nombre"];
@@ -65,6 +71,7 @@ class PropietarioController
 
     public function delete()
     {
+        Auth::requirePermission("eliminar_propietario");
         $cedula = $_GET["cedula"] ?? null;
         if ($cedula) {
             $this->propietarioModel->delete($cedula);

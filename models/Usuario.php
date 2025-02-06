@@ -5,22 +5,32 @@ class Usuario extends BaseModel
 {
     public function verificarCredenciales($email, $password)
     {
-        $stmt = $this->db->prepare("SELECT * FROM usuarios WHERE email = ? LIMIT 1");
+        $stmt = $this->db->prepare("
+            SELECT u.*, r.nombre AS rol 
+            FROM usuarios u
+            LEFT JOIN roles r ON u.rol_id = r.id
+            WHERE u.email = ? 
+            LIMIT 1
+        ");
         $stmt->execute([$email]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$usuario) {
-            return false; // Usuario no encontrado
+        if (!$usuario || !password_verify($password, $usuario['password'])) {
+            return false;
         }
 
-        if (!password_verify($password, $usuario['password'])) {
-            return false; // Contraseña incorrecta
-        }
+        // Obtener permisos del usuario
+        $stmt = $this->db->prepare("
+            SELECT p.nombre 
+            FROM permisos p
+            JOIN rol_permiso rp ON p.id = rp.permiso_id
+            WHERE rp.rol_id = ?
+        ");
+        $stmt->execute([$usuario["rol_id"]]);
+        $usuario["permisos"] = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
         return $usuario;
     }
-
-
 
 
 

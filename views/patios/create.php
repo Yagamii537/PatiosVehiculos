@@ -1,7 +1,18 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION["usuario"])) {
+    header("Location: /gestionpatios/login");
+    exit();
+}
+$usuario = $_SESSION["usuario"];
+?>
+
 <?php include __DIR__ . "/../layouts/header.php"; ?>
 <?php include __DIR__ . "/../layouts/navbar.php"; ?>
 
-<div class="container-fluid">
+<div class="container-fluid  mt-5">
     <div class="row">
         <div class="col-3">
             <?php include __DIR__ . "/../layouts/sidebar.php"; ?>

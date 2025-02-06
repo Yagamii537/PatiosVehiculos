@@ -6,6 +6,7 @@ class MarcaController extends BaseController
 {
     public function index()
     {
+        Auth::requirePermission("gestionar_marcas");
         $marcaModel = new Marca();
         $marcas = $marcaModel->getAll();
         $this->view("marcas/index", ["marcas" => $marcas]);
@@ -13,11 +14,13 @@ class MarcaController extends BaseController
 
     public function create()
     {
+        Auth::requirePermission("crear_marca");
         $this->view("marcas/create");
     }
 
     public function store()
     {
+        Auth::requirePermission("crear_marca");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $nombre = $_POST["nombre"];
 
@@ -31,6 +34,7 @@ class MarcaController extends BaseController
 
     public function edit()
     {
+        Auth::requirePermission("editar_marca");
         if (!isset($_GET["id"])) {
             echo "Error: No se proporcionó un ID válido.";
             return;
@@ -50,6 +54,7 @@ class MarcaController extends BaseController
 
     public function update()
     {
+        Auth::requirePermission("editar_marca");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $id = $_POST["id"];
             $nombre = $_POST["nombre"];
@@ -64,6 +69,7 @@ class MarcaController extends BaseController
 
     public function delete()
     {
+        Auth::requirePermission("eliminar_marca");
         if (!isset($_GET["id"])) {
             echo "Error: No se proporcionó un ID válido.";
             return;

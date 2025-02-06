@@ -7,6 +7,7 @@ class ModeloController extends BaseController
 {
     public function index()
     {
+        Auth::requirePermission("gestionar_modelos");
         $modeloModel = new Modelo();
         $modelos = $modeloModel->getAll();
         $this->view("modelos/index", ["modelos" => $modelos]);
@@ -14,6 +15,7 @@ class ModeloController extends BaseController
 
     public function create()
     {
+        Auth::requirePermission("crear_modelo");
         $marcaModel = new Marca();
         $marcas = $marcaModel->getAll(); // Obtener todas las marcas para el select
         $this->view("modelos/create", ["marcas" => $marcas]);
@@ -21,6 +23,7 @@ class ModeloController extends BaseController
 
     public function store()
     {
+        Auth::requirePermission("crear_modelo");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $nombre = $_POST["nombre"];
             $marca_id = $_POST["marca_id"];
@@ -35,6 +38,7 @@ class ModeloController extends BaseController
 
     public function edit()
     {
+        Auth::requirePermission("editar_modelo");
         if (!isset($_GET["id"])) {
             echo "Error: No se proporcionó un ID válido.";
             return;
@@ -57,6 +61,7 @@ class ModeloController extends BaseController
 
     public function update()
     {
+        Auth::requirePermission("editar_modelo");
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $id = $_POST["id"];
             $nombre = $_POST["nombre"];
@@ -72,6 +77,7 @@ class ModeloController extends BaseController
 
     public function delete()
     {
+        Auth::requirePermission("eliminar_modelo");
         if (!isset($_GET["id"])) {
             echo "Error: No se proporcionó un ID válido.";
             return;

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION["usuario"])) {
     header("Location: /gestionpatios/login");
     exit();
@@ -9,7 +11,7 @@ $usuario = $_SESSION["usuario"];
 <?php include __DIR__ . "/../layouts/header.php"; ?>
 <?php include __DIR__ . "/../layouts/navbar.php"; ?>
 
-<div class="container-fluid">
+<div class="container-fluid mt-5">
     <div class="row">
         <div class="col-3">
             <?php include __DIR__ . "/../layouts/sidebar.php"; ?>
@@ -26,9 +28,9 @@ $usuario = $_SESSION["usuario"];
                             <option value="">Seleccione un modelo</option>
                             <?php foreach ($modelos as $modelo): ?>
                                 <option value="<?php echo $modelo["id"]; ?>"
-                                    data-marca="<?php echo htmlspecialchars($modelo["marca"] ?? 'Desconocida'); ?>"
+                                    data-marca="<?php echo htmlspecialchars($modelo["marca_nombre"] ?? 'Desconocida'); ?>"
                                     <?php echo $vehiculo["modelo_id"] == $modelo["id"] ? "selected" : ""; ?>>
-                                    <?php echo htmlspecialchars($modelo["modelo"]); ?>
+                                    <?php echo htmlspecialchars($modelo["modelo_nombre"]); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

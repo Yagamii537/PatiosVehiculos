@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 if (!isset($_SESSION["usuario"])) {
     header("Location: /gestionpatios/login");
     exit();
@@ -36,12 +36,12 @@ $totalRegistros = count($registroModel->getAll());
 <?php include __DIR__ . "/layouts/header.php"; ?>
 <?php include __DIR__ . "/layouts/navbar.php"; ?>
 
-<div class="container-fluid">
+<div class="container-fluid mt-5">
     <div class="row">
-        <div class="col-3">
+        <div class="col-3 sidebar">
             <?php include __DIR__ . "/layouts/sidebar.php"; ?>
         </div>
-        <div class="col-9">
+        <div class="col-9" style="margin-left: 250px;">
             <div class="container mt-5">
                 <h2>Bienvenido, <?php echo htmlspecialchars($usuario["nombre"]); ?>!</h2>
                 <p>Has iniciado sesión correctamente.</p>
