@@ -5,6 +5,7 @@ class BaseController
 {
     protected function view($view, $data = [])
     {
-        require_once "../views/" . $view . ".php";
+        extract($data);
+        require_once __DIR__ . "/../views/" . $view . ".php";
     }
 }
